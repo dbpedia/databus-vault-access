@@ -1,6 +1,10 @@
 # DBpedia Databus Vault Access
 Code to programmatically access the DBpedia Databus Vaults via the DBpedia Unified Account
 
+## Roadmap
+At the moment, there is only a minimal bash script. Later more utility will be added like parallel downloads, different programming languages like Python/Scala. If you are a developer, it can help you to implement your own download code or use ChatGPT. 
+
+
 ## Bash Usage: download_file_from_vault.sh
 Script to authorize towards a DBpedia Vault to download files.
 
