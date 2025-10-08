@@ -94,7 +94,7 @@ if [ "$DEBUG" = "true" ]; then
 fi
 
 # Download file
-curl --location "$DOWNLOAD_URL" -O --header "Authorization: Bearer $vault_access_token" --header "User-Agent: $USER_AGENT" # agent optional: for usage tracking
+curl -f --location "$DOWNLOAD_URL" -O --header "Authorization: Bearer $vault_access_token" --header "User-Agent: $USER_AGENT" # agent optional: for usage tracking
 
 status=$?
 # Print download result if debug is enabled

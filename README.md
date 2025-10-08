@@ -2,8 +2,44 @@
 Code to programmatically access the DBpedia Databus Vaults via the DBpedia Unified Account
 
 ## Roadmap
-At the moment, there is only a minimal bash script. Later more utility will be added like parallel downloads, different programming languages like Python/Scala. If you are a developer, it can help you to implement your own download code or use ChatGPT. 
+At the moment, there is only two simple bash scripts, one for downloading a file and one for downloading a Databus asset given its Databus IRI (which makes use of the file download script).
+Later more utility will be added like parallel downloads, different programming languages like Python/Scala. If you are a developer, it can help you to implement your own download code or use ChatGPT. 
 
+
+## Bash Usage: fetch_databus_asset.sh
+Main script to fetch assets from DBpedia Databus, handling artifact, version, or file IRIs currently. It automatically detects vault-hosted files and uses `download_file_from_vault.sh` for authentication if necessary. 
+
+### Prerequisites
+1. Ensure required tools are installed: `bash`, `curl`, `awk`, `sed`. The script checks for these at runtime and exits with an error if any are missing.
+2. If your Databus asset contains files hosted in a vault, ensure you have met the prerequites for `download_file_from_vault.sh` (see next section).
+
+### Usage Examples
+```bash
+# Download latest version of an artifact
+./fetch_databus_asset.sh 'https://databus.dbpedia.org/jj-author/kb/links'
+
+# Download a specific version
+./fetch_databus_asset.sh 'https://databus.dbpedia.org/jj-author/kb/links' --version '2020.07.29'
+
+# Download a single file
+./fetch_databus_asset.sh 'https://databus.dbpedia.org/jj-author/kb/links/2020.07.29/links_set=nbt_tag=owlSameAs_type=addresses.nt.bzip2'
+
+# Dry run to see what would be downloaded
+./fetch_databus_asset.sh 'https://databus.dbpedia.org/jj-author/kb/links' --dry-run
+
+# Specify output directory
+./fetch_databus_asset.sh 'https://databus.dbpedia.org/jj-author/kb/links' --output-dir /path/to/output
+
+# Continue on download errors
+./fetch_databus_asset.sh 'https://databus.dbpedia.org/jj-author/kb/links' --continue-on-error
+```
+
+### CLI Options
+- `--sparql-endpoint URL|auto`: Databus SPARQL endpoint (default: auto (derived from Databus host))
+- `--dry-run`: Resolve but don’t download
+- `--debug`: Verbose execution
+- `--output-dir DIR`: Output directory (default: current)
+- `--continue-on-error`: Continue downloading other files even if one fails (default: abort on error)
 
 ## Bash Usage: download_file_from_vault.sh
 Script to authorize towards a DBpedia Vault to download files.
@@ -22,7 +58,7 @@ ls -ls
 8 -rwxrw-r-- 1 kurzum kurzum 4214 Aug  7 15:59 download_file_from_vault.sh
 4 -rw-rw-r-- 1 kurzum kurzum  682 Aug  7 15:58 vault-token.dat
 ```
-2. Make sure the necessary libraries are installed (see header in `download_file_from_vault.sh`)
+2. Make sure the necessary tools are installed: `bash`, `curl`, `jq`, `awk`, `xargs`. The script checks for these at runtime and exits with an error if any are missing.
 3. (optional) the script provides parameters to change the file name, i.e. `REFRESH_TOKEN_FILE=someothertokenfile.dat` as well as pass the token directly `REFRESH_TOKEN=1234yourtoken`.
 
 ### Step 3: (Optional) test run
