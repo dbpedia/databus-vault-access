@@ -35,11 +35,11 @@ Main script to fetch assets from DBpedia Databus, handling artifact, version, or
 ```
 
 ### CLI Options
-- `--sparql-endpoint URL|auto`: Databus SPARQL endpoint (default: auto (derived from Databus host))
+- `--sparql-endpoint URL|auto`: Databus SPARQL endpoint (default: auto, derived from Databus host)
 - `--dry-run`: Resolve but don’t download
 - `--debug`: Verbose execution
 - `--output-dir DIR`: Output directory (default: current)
-- `--continue-on-error`: Continue downloading other files even if one fails (default: abort on error)
+- `--continue-on-error`: Continue downloading other files even if one fails (default: fail on error)
 
 ## Bash Usage: download_file_from_vault.sh
 Script to authorize towards a DBpedia Vault to download files.
@@ -87,6 +87,7 @@ The following environment variables can be set to control the behavior of the do
 | `CLIENT_ID`         | The Keycloak client ID to use for token exchange.                                                   | `vault-token-exchange`                                                        |
 | `VAULT_CLIENT_ID`   | The audience/target client for token exchange. If not set, derived from the FQDN of `DOWNLOAD_URL`. | FQDN from `DOWNLOAD_URL`                                                      |
 | `DEBUG`             | If set to `true`, enables debug output and disables curl silent mode.                               | `true`                                                                        |
+| `DOWNLOAD_OUTPUT_DIR`| The directory where the downloaded file should be saved.                                           | `.`                                                                          |
 
 You can set these variables in your shell before running the script, for example:
 

@@ -12,6 +12,7 @@ USER_AGENT="Vault File Download Bash Script $SCRIPT_VERSION"
 
 # All variables can be set via environment, fallback to defaults
 DOWNLOAD_URL="${DOWNLOAD_URL:-https://data.dbpedia.io/databus.dbpedia.org/dbpedia-enterprise/sneak-preview/fusion/2025-07-17/fusion_subjectns%3Ddbpedia-io_vocab%3Ddbo_props%3DwikipageUsesTemplate.ttl.gz}"
+DOWNLOAD_OUTPUT_DIR="${DOWNLOAD_OUTPUT_DIR:-.}"
 REFRESH_TOKEN_FILE="${REFRESH_TOKEN_FILE:-vault-token.dat}"
 AUTH_URL="${AUTH_URL:-https://auth.dbpedia.org/realms/dbpedia/protocol/openid-connect/token}"
 CLIENT_ID="${CLIENT_ID:-vault-token-exchange}"
@@ -94,7 +95,9 @@ if [ "$DEBUG" = "true" ]; then
 fi
 
 # Download file
-curl -f --location "$DOWNLOAD_URL" -O --header "Authorization: Bearer $vault_access_token" --header "User-Agent: $USER_AGENT" # agent optional: for usage tracking
+mkdir -p "$DOWNLOAD_OUTPUT_DIR" || { echo "Error: cannot create output dir $DOWNLOAD_OUTPUT_DIR" >&2; exit 2; }
+target_file="$DOWNLOAD_OUTPUT_DIR/$(basename "$DOWNLOAD_URL")"
+curl -f --location "$DOWNLOAD_URL" -o "$target_file" --header "Authorization: Bearer $vault_access_token" --header "User-Agent: $USER_AGENT"
 
 status=$?
 # Print download result if debug is enabled
